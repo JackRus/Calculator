@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- PAGE TITLE -->
+	<title>Jack's CALC</title>
+	<style>
+		div.calc {
+			font-family: Arial, Helvetica, sans-serif;
+			margin-top: 40px;
+			margin-left: 40px;
+			width: 400px;
+			border: 2px solid dimgrey;
+			-moz-box-shadow: 0 0 10px #AAA;
+			-webkit-box-shadow: 0 0 10px #AAA;
+			box-shadow: 0 0 10px #AAA;
+			display: inline-block;
+		}
+		
+		#digits {
+			width: 400px;
+			padding: 0px;
+			margin: 0px;
+			box-sizing: border-box;
+			font-size: 0px;
+		}
+		
+		input {
+			width: 100px;
+			/*height: 100px;*/
+			display: inline-block;
+			background-color: mediumseagreen;
+			border: 1px solid dimgrey;
+			margin: 0px;
+			box-sizing: border-box;
+			font-size: 37px;
+			color: #FFF;
+			text-align: center;
+			line-height: 95px;
+			cursor: pointer;
+			outline: none;
+		}
+		
+		a {
+			width: 100px;
+			/*height: 100px;*/
+			display: inline-block;
+			background-color: mediumseagreen;
+			border: 1px solid dimgrey;
+			margin: 0px;
+			box-sizing: border-box;
+			font-size: 37px;
+			color: #FFF;
+			text-align: center;
+			line-height: 100px;
+			cursor: pointer;
+		}
+		
+		span {
+			height: 120px;
+			display: block;
+			background-color: dimgrey;
+			margin: 0px;
+			box-sizing: border-box;
+			font-size: 40px;
+			color: #FFF;
+			text-align: right;
+			line-height: 120px;
+			padding-right: 20px;
+			padding-left: 10px;
+			word-wrap: break-word;
+		}
+		
+		input:hover {
+			filter: brightness(108%);
+			-moz-box-shadow: inset 0 0 5px #666;
+			-webkit-box-shadow: inset 0 0 5px #666;
+			box-shadow: inset 0 0 5px #666;
+		}
+		
+		.box-in {
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 18px;
+			text-align: left;
+			display: inline-block;
+			vertical-align: top;
+		}
+		
+		.box {
+			vertical-align: top;
+			margin-top: 40px;
+			margin-left: 40px;
+			display: inline-block;
+		}
+	</style>
+
+</head>
+
+<body style="align-content: center;">
+	<div style="text-align: center;">
+		<div class="calc">
+			<span id="span">0</span>
+			<div id="digits">
+
+				<input type="button" value="C" onclick="display.innerHTML = '0'">
+				<input type="button" value="+/-" onclick="addSign();">
+				<input type="button" value="x^y" onclick="addMath('**')">
+				<input type="button" value="/" onclick="addMath('/');" style="background-color: #368ee4;">
+
+				<input type="button" value="7" onclick="add('7');">
+				<input type="button" value="8" onclick="add('8');">
+				<input type="button" value="9" onclick="add('9');">
+				<input type="button" value="x" onclick="addMath('*');" style="background-color: #368ee4;">
+
+				<input type="button" value="4" onclick="add('4');">
+				<input type="button" value="5" onclick="add('5');">
+				<input type="button" value="6" onclick="add('6');">
+				<input type="button" value="-" onclick="addMath('-');" style="background-color: #368ee4;">
+
+				<input type="button" value="1" onclick="add('1');">
+				<input type="button" value="2" onclick="add('2');">
+				<input type="button" value="3" onclick="add('3');">
+				<input type="button" value="+" onclick="addMath('+');" style="background-color: #368ee4;">
+
+				<input type="button" value="." onclick="add('.');">
+				<input type="button" value="0" onclick="add('0');">
+				<input type="button" value="=" onclick="result();">
+				<input type="button" value="√" onclick="root();" style="background-color: #368ee4;">
+
+				</ul>
+			</div>
+		</div>
+
+		<div class="box">
+			<div class="box-in">
+				Latest operation:
+			</div>
+			<div class="box-in">
+				<ul id="actions" style="margin: 0px; padding-left: 10px;">
+				</ul>
+			</div>
+		</div>
+	</div>
+
+
+	<script>
+		var display = document.getElementById('span');
+		var lastEntry;
+		var sqrt = "";
+		var actions = [10];
+		var check = JSON.parse(localStorage.getItem("calculations"));
+		if (check) actions = check;
+		
+		// ADDS DIGITS
+		var add = function (v) {
+			if (display.innerHTML == "0" || display.innerHTML == "Error") {
+				display.innerHTML = "";
+				if (v ==".")
+					display.innerHTML = "0.";
+				else 
+					display.innerHTML = v;
+			}
+			else 
+			{
+				if (v == "." && "-+/**".includes(lastEntry))
+					display.innerHTML = display.innerHTML + "0.";
+				else 
+					display.innerHTML = display.innerHTML + v;
+			}
+			lastEntry = v;
+		}
+
+		// ADDS OPERATIONS
+		var addMath = function (v) {
+			if (display.innerHTML == "0" || display.innerHTML == "Error") { }
+			else {
+				if ("-+/**.".includes(lastEntry)) {
+					var str = display.innerHTML.replace(lastEntry, v);
+					display.innerHTML = str;
+				}
+				else {
+					result();
+					display.innerHTML = display.innerHTML + v;
+				}
+			}
+			lastEntry = v;
+		}
+
+		// CHANGES SIGN +/-
+		var addSign = function () {
+			var val = eval(display.innerHTML);
+			if (display.innerHTML == "0" || display.innerHTML == "Error") { }
+			else {
+				if (display.innerHTML == val.toString() || ("-+/**".includes(lastEntry))) {
+					if (display.innerHTML.charAt(0) == "-")
+						display.innerHTML = display.innerHTML.slice(1);
+					else
+						display.innerHTML = "-" + display.innerHTML;
+				}
+			}
+		}
+
+		// PERFORMS SQRT()
+		var root = function () {
+			result();
+			var res = Math.sqrt(display.innerHTML);
+			if (!isNaN(res)) {
+				sqrt = "sqrt";
+				addAction();
+				display.innerHTML = res.toString();
+			}
+			else
+				display.innerHTML = "Error";
+		}
+
+		// EVALUATES THE ENTRY
+		var result = function () {
+			var val = parseFloat(eval(display.innerHTML).toFixed(4));
+			
+			if (!isNaN(val)) {
+				if (display.innerHTML == val.toString()) { }
+				else addAction();
+				display.innerHTML = val.toString();
+			}
+			else
+				display.innerHTML = "Error";
+		}
+
+		// ADDS OPERATION TO THE ARRAY
+		var addAction = function () {
+			for (var i = 0; i < actions.length - 1; i++)
+				actions[i] = actions[i + 1];
+			if (sqrt == "sqrt") {
+				actions[9] = "sqrt(" + display.innerHTML + ")";
+				sqrt = "";
+			}
+			else
+				actions[9] = display.innerHTML;
+			lines();
+			localStorage.setItem("calculations", JSON.stringify(actions));
+		};
+
+		// DISPLAYS LIST OF LAST 10 OPERATIONS
+		window.onload = lines();
+		function lines() {
+			var line = "";
+			for (var i = 0; i < actions.length; i++) {
+				var line = line + actions[9 - i] + "<br/>";
+			}
+			document.getElementById("actions").innerHTML = line;
+		};
+
+	</script>
+
+</body>
+</html>
