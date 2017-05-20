@@ -42,20 +42,22 @@ var reset = function () {
 var add = function (v) {
 	if (!equal) {
 		span2.innerHTML == "" ? curSpan = span1 : curSpan = span3;
-
-		if (curSpan.innerHTML == "0" || curSpan.innerHTML == "") {
-			curSpan.innerHTML = "";
-			if (v == ".")
-				curSpan.innerHTML = "0.";
-			else
-				curSpan.innerHTML = v;
+		if (curSpan.innerText.length < 21)
+		{
+			if (curSpan.innerHTML == "0" || curSpan.innerHTML == "") {
+				curSpan.innerHTML = "";
+				if (v == ".")
+					curSpan.innerHTML = "0.";
+				else
+					curSpan.innerHTML = v;
+			}
+			else {
+				if (curSpan.innerHTML.includes(".") && v == ".") {/* SKIP */ }
+				else
+					curSpan.innerHTML = curSpan.innerHTML + v;
+			}
+			lastEntry = v;
 		}
-		else {
-			if (curSpan.innerHTML.includes(".") && v == ".") {/* SKIP */ }
-			else
-				curSpan.innerHTML = curSpan.innerHTML + v;
-		}
-		lastEntry = v;
 	}
 }
 
