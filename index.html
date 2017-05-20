@@ -6,7 +6,6 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 	<!-- PAGE TITLE -->
 	<title>Jack's CALC</title>
@@ -14,6 +13,7 @@
 		div.calc {
 			font-family: Arial, Helvetica, sans-serif;
 			margin-top: 40px; 
+			margin-left: 40px; 
 			width: 400px;
 			border: 2px solid dimgrey;
 			-moz-box-shadow: 0 0 10px #AAA;
@@ -90,8 +90,7 @@
 			font-family: Arial, Helvetica, sans-serif;
 			font-size: 18px;
 			text-align: left;
-			display: inline-block;
-			vertical-align: top;
+			display: block;
 		}
 		
 		.box {
@@ -105,7 +104,7 @@
 </head>
 
 <body style="align-content: center;">
-	<div style="text-align: center;">
+	<div>
 		<div class="calc conteiner">
 			<span id="span">0</span>
 			<div id="digits">
@@ -141,7 +140,7 @@
 
 		<div class="box">
 			<div class="box-in">
-				Latest operation:
+				Latest operations:
 			</div>
 			<div class="box-in">
 				<ul id="actions" style="margin: 0px; padding-left: 10px;">
@@ -155,8 +154,8 @@
 		var display = document.getElementById('span');
 		var lastEntry;
 		var sqrt = "";
-		var actions = [10];
-		var len = actions.length-1;
+		var actions = [];
+		var len = 10;
 
 		var check = JSON.parse(localStorage.getItem("calculations"));
 		if (check) actions = check;
@@ -182,8 +181,9 @@
 
 		// ADDS OPERATIONS
 		var addMath = function (v) {
-			if (display.innerHTML == "0" || display.innerHTML == "Error") { }
+			if ((display.innerHTML == "0" || display.innerHTML == "Error") && lastEntry != "0") { }
 			else {
+				
 				if ("-+/**.".includes(lastEntry)) {
 					var str = display.innerHTML.replace(lastEntry, v);
 					display.innerHTML = str;
@@ -225,27 +225,32 @@
 
 		// EVALUATES THE ENTRY
 		var result = function () {
-			var val = parseFloat(eval(display.innerHTML).toFixed(4));
-			
-			if (!isNaN(val)) {
-				if (display.innerHTML == val.toString()) { }
-				else addAction();
-				display.innerHTML = val.toString();
-			}
+			if ("-+/**".includes(lastEntry)) {}
 			else
-				display.innerHTML = "Error";
+			{
+				var val = parseFloat(eval(display.innerHTML).toFixed(4));
+				var str = val.toString();
+				if (str != "NaN" && str != "Infinity" && str !="Error") {
+					
+					if (display.innerHTML == val.toString()) { }
+					else addAction();
+					display.innerHTML = val.toString();
+				}
+				else
+					display.innerHTML = "Error";
+			}
 		}
 
 		// ADDS OPERATION TO THE ARRAY
 		var addAction = function () {
-			for (var i = 0; i < len; i++)
+			for (var i = 0; i < len-1; i++)
 				actions[i] = actions[i + 1];
 			if (sqrt == "sqrt") {
-				actions[len] = "sqrt(" + display.innerHTML + ")";
+				actions[len-1] = "sqrt(" + display.innerHTML + ")";
 				sqrt = "";
 			}
 			else
-				actions[len] = display.innerHTML;
+				actions[len-1] = display.innerHTML;
 			lines();
 			localStorage.setItem("calculations", JSON.stringify(actions));
 		};
@@ -254,14 +259,15 @@
 		window.onload = lines();
 		function lines() {
 			var line = "";
-			for (var i = 0; i <= len; i++) {
-				if (actions[len - i])
-					var line = line + "-> " + actions[len - i] + "<br/>";
+			for (var i = 0; i < len; i++) {
+				if (!actions[len-1 - i]) actions[len-1-i] = " ";
+				var line = line + (len-i).toString() +") " + actions[len-1 - i] + "<br/>";
 			}
 			document.getElementById("actions").innerHTML = line;
 		};
 
 	</script>
+	<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 </body>
