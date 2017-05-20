@@ -6,83 +6,89 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
 	<!-- PAGE TITLE -->
 	<title>Jack's CALC</title>
 	<style>
 		div.calc {
-			font-family: Arial, Helvetica, sans-serif;
-			margin-top: 40px; 
-			margin-left: 40px; 
-			width: 400px;
-			border: 2px solid dimgrey;
-			-moz-box-shadow: 0 0 10px #AAA;
-			-webkit-box-shadow: 0 0 10px #AAA;
-			box-shadow: 0 0 10px #AAA;
-			display: inline-block;
+		font-family: Arial, Helvetica, sans-serif;
+		margin-top: 40px;
+		margin-left: 40px;
+		width: 400px;
+		border: 2px solid dimgrey;
+		-moz-box-shadow: 0 0 10px #aaa;
+		-webkit-box-shadow: 0 0 10px #aaa;
+		box-shadow: 0 0 10px #aaa;
+		display: inline-block;
+		background-color: dimgrey;
+		box-sizing: initial;
+		}
 
-			box-sizing: initial;
-		}
-		
 		#digits {
-			width: 400px;
-			padding: 0px;
-			font-size: 0px;
-			margin: 0px;
-			box-sizing: border-box;
+		width: 400px;
+		padding: 0px;
+		font-size: 0px;
+		margin: 0px;
+		box-sizing: border-box;
 		}
-		
+
 		input {
-			width: 100px;
-			/*height: 100px;*/
-			display: inline-block;
-			background-color: mediumseagreen;
-			border: 1px solid dimgrey;
-			margin: 0px;
-			box-sizing: border-box;
-			font-size: 37px;
-			color: #FFF;
-			text-align: center;
-			line-height: 95px;
-			cursor: pointer;
-			outline: none;
-			border-radius: 0px;
+		width: 100px;
+		/*height: 100px;*/
+		display: inline-block;
+		background-color: mediumseagreen;
+		border: 1px solid dimgrey;
+		margin: 0px;
+		box-sizing: border-box;
+		font-size: 37px;
+		color: #fff;
+		text-align: center;
+		line-height: 95px;
+		cursor: pointer;
+		outline: none;
+		border-radius: 0px;
 		}
-		
+
 		span {
-			height: 120px;
-			display: block;
-			background-color: dimgrey;
-			margin: 0px;
-			box-sizing: border-box;
-			font-size: 40px;
-			color: #FFF;
-			text-align: right;
-			line-height: 120px;
-			padding-right: 20px;
-			padding-left: 10px;
-			word-wrap: break-word;
+		height: 30px;
+		display: block;
+		background-color: dimgrey;
+		margin-bottom: 5px;
+		box-sizing: border-box;
+		font-size: 30px;
+		color: #fff;
+		text-align: right;
+		line-height: 30px;
+		padding-right: 20px;
+		padding-left: 10px;
+		word-wrap: break-word;
 		}
-		
+
+		span.small {
+		height: 15px;
+		font-size: 16px;
+		line-height: 15px;
+		color: yellow;
+		}
+
 		input:hover {
-			filter: brightness(108%);
-			-moz-box-shadow: inset 0 0 5px #666;
-			-webkit-box-shadow: inset 0 0 5px #666;
-			box-shadow: inset 0 0 5px #666;
+		filter: brightness(108%);
+		-moz-box-shadow: inset 0 0 5px #666;
+		-webkit-box-shadow: inset 0 0 5px #666;
+		box-shadow: inset 0 0 5px #666;
 		}
-		
+
 		.box-in {
-			font-family: Arial, Helvetica, sans-serif;
-			font-size: 18px;
-			text-align: left;
-			display: block;
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 18px;
+		text-align: left;
+		display: block;
 		}
-		
+
 		.box {
-			vertical-align: top;
-			margin-top: 40px;
-			margin-left: 40px;
-			display: inline-block;
+		vertical-align: top;
+		margin-top: 40px;
+		margin-left: 40px;
+		display: inline-block;
 		}
 	</style>
 
@@ -91,10 +97,14 @@
 <body style="align-content: center;">
 	<div>
 		<div class="calc conteiner">
-			<span id="span">0</span>
+			<span id="span1" style="margin-top: 10px;">0</span>
+			<span id="span2" class="small"></span>
+			<span id="span3"></span>
+			<span id="span4" class="small" style="font-size: 16px;"></span>
+			<span id="span5"></span>
 			<div id="digits">
 
-				<input type="button" value="C" onclick="display.innerHTML = '0'">
+				<input type="button" value="C" onclick="reset();">
 				<input type="button" value="+/-" onclick="addSign();">
 				<input type="button" value="x^y" onclick="addMath('**')">
 				<input type="button" value="/" onclick="addMath('/');" style="background-color: #368ee4;">
@@ -116,7 +126,7 @@
 
 				<input type="button" value="." onclick="add('.');">
 				<input type="button" value="0" onclick="add('0');">
-				<input type="button" value="=" onclick="result('=');">
+				<input type="button" value="=" onclick="result();">
 				<input type="button" value="√" onclick="root();" style="background-color: #368ee4;">
 
 				</ul>
@@ -133,112 +143,167 @@
 			</div>
 		</div>
 	</div>
-
-
 	<script>
-		var display = document.getElementById('span');
-		var lastEntry;
-		var sqrt = "";
+		// STORAGE FOR OPERATIONS  
 		var actions = [];
 		var len = 10;
 
+		// LINKS
+		var span1 = document.getElementById("span1");
+		var span2 = document.getElementById("span2");
+		var span3 = document.getElementById("span3");
+		var span4 = document.getElementById("span4");
+		var span5 = document.getElementById("span5");
+
+		// BUFFERS
+		var curSpan;
+		var lastEntry;
+		var lastOp;
+		var equal;
+		var math;
+
+		// RETURNS STORED VALUES FOR LAST OPERATIONS
 		var check = JSON.parse(localStorage.getItem("calculations"));
+
+		// IF lacalStorage ISN'T EMPTY FILL THE ARRAY
 		if (check) actions = check;
-		
+
+		// RESETS ALL TEMPORARY VALUES AND CLEANS THE DISPLAYS || LAST VALUE and CURREENT DISPLAY
+		var reset = function () {
+			if (equal || lastEntry == "C")
+			{
+				span1.innerHTML = "0";
+				span2.innerHTML = "";
+				span3.innerHTML = "";
+				span4.innerHTML = "";
+				span5.innerHTML = "";
+				curSpan = span1;
+				equal = false;
+			}
+			else
+				curSpan.innerHTML = "0";
+			lastEntry = "C";
+		}
+
 		// ADDS DIGITS
 		var add = function (v) {
-			if (lastEntry == "=") display.innerHTML = "0";
-			if (display.innerHTML == "0" || display.innerHTML == "Error") {
-				display.innerHTML = "";
-				if (v ==".")
-					display.innerHTML = "0.";
-				else 
-					display.innerHTML = v;
+			if (!equal) {
+				span2.innerHTML == "" ? curSpan = span1 : curSpan = span3;
+
+				if (curSpan.innerHTML == "0" || curSpan.innerHTML == "") {
+					curSpan.innerHTML = "";
+					if (v == ".")
+						curSpan.innerHTML = "0.";
+					else
+						curSpan.innerHTML = v;
+				}
+				else {
+					if (curSpan.innerHTML.includes(".") && v == ".") {/* SKIP */ }
+					else
+						curSpan.innerHTML = curSpan.innerHTML + v;
+				}
+				lastEntry = v;
 			}
-			else 
-			{
-				if (v == "." && "-+/**".includes(lastEntry))
-					display.innerHTML = display.innerHTML + "0.";
-				else 
-					display.innerHTML = display.innerHTML + v;
-			}
-			lastEntry = v;
 		}
 
 		// ADDS OPERATIONS
 		var addMath = function (v) {
-			 
-			if ((display.innerHTML == "0" || display.innerHTML == "Error") && lastEntry != "0") { }
-			else {
-				
-				if ("-+/**.".includes(lastEntry)) {
-					var str = display.innerHTML.replace(lastEntry, v);
-					display.innerHTML = str;
+			if (!equal)
+			{
+				if (curSpan == span1) {
+					span2.innerHTML = v;
+					curSpan == span3;
 				}
-				else {
-					result();
-					display.innerHTML = display.innerHTML + v;
-				}
+				lastEntry = v;
 			}
-			lastEntry = v;
+			else 
+			{
+				var temp = span5.innerHTML;  
+				reset();
+				span1.innerHTML = temp;
+				equal = false;
+				span2.innerHTML = v;
+				lastEntry = v;
+			}
 		}
 
 		// CHANGES SIGN +/-
 		var addSign = function () {
-			var val = eval(display.innerHTML);
-			if (display.innerHTML == "0" || display.innerHTML == "Error") { }
-			else {
-				if (display.innerHTML == val.toString() || ("-+/**".includes(lastEntry))) {
-					if (display.innerHTML.charAt(0) == "-")
-						display.innerHTML = display.innerHTML.slice(1);
-					else
-						display.innerHTML = "-" + display.innerHTML;
-				}
+			if (!equal)
+			{
+				//span2.innerHTML == "" ? curSpan = span1 : curSpan = span3;
+				if (curSpan.innerHTML.charAt(0) == "-")
+					curSpan.innerHTML = curSpan.innerHTML.slice(1);
+				else
+					curSpan.innerHTML = "-" + curSpan.innerHTML;
 			}
 		}
 
 		// PERFORMS SQRT()
 		var root = function () {
-			result();
-			var res = Math.sqrt(display.innerHTML);
-			if (!isNaN(res)) {
-				sqrt = "sqrt";
-				addAction();
-				display.innerHTML = res.toString();
+			if (!equal)
+			{
+				if (curSpan == span1) {
+					span2.innerHTML = "square root";
+					var res = Math.sqrt(curSpan.innerHTML);
+					span4.innerHTML = "=";
+					equal = true;
+
+					if (!isNaN(res)) {
+						span5.innerHTML = res.toString();
+						math = "sqrt( " + span1.innerHTML + " ) = " + span5.innerHTML
+						addAction(math);
+						curSpan == span5;
+					}
+					else
+						span5.innerHTML = "Error";
+				}
 			}
 			else
-				display.innerHTML = "Error";
+			{
+				var temp = span5.innerHTML;  
+				reset();
+				span1.innerHTML = temp;
+				equal = false;
+				curSpan = span1;
+				root();
+			}
+			lastEntry = "sqrt";
 		}
 
 		// EVALUATES THE ENTRY
-		var result = function (v) {
-			if ("-+/**".includes(lastEntry)) {}
-			else
-			{
-				var val = parseFloat(eval(display.innerHTML).toFixed(4));
+		var result = function () {
+			if (!equal) {
+				var math = "(" + span1.innerHTML + ")" + span2.innerHTML + "(" + span3.innerHTML + ")";
+				var val = parseFloat(eval(math).toFixed(4));
 				var str = val.toString();
-				if (str != "NaN" && str != "Infinity" && str !="Error") {
-					
-					if (display.innerHTML == val.toString()) { }
-					else addAction();
-					display.innerHTML = val.toString();
+				span5.innerHTML = "=";
+				if (str != "NaN" && str != "Infinity" && str != "Error") {
+					span4.innerHTML = "=";
+					span5.innerHTML = val.toString();
+					math = span1.innerHTML + " " + span2.innerHTML + " " + span3.innerHTML + "= " + span5.innerHTML;
+					addAction(math);
 				}
 				else
-					display.innerHTML = "Error";
+					span5.innerHTML = "Error";
+				curSpan = span5;
+				equal = true;
 			}
-			if (v == "=") lastEntry = "="; 
+			else
+			{
+				span1.innerHTML = span5.innerHTML;
+				span5.innerHTML = "";
+				equal = false;
+				result();
+			}
+			
 		}
 
 		// ADDS OPERATION TO THE ARRAY
-		var addAction = function () {
-			for (var i = 0; i < len-1; i++)
+		var addAction = function (v) {
+			for (var i = 0; i < len - 1; i++)
 				actions[i] = actions[i + 1];
-			if (sqrt == "sqrt") {
-				actions[len-1] = "sqrt(" + display.innerHTML + ")";
-				sqrt = "";
-			}
-			else
-				actions[len-1] = display.innerHTML;
+			actions[len - 1] = v;
 			lines();
 			localStorage.setItem("calculations", JSON.stringify(actions));
 		};
@@ -248,15 +313,15 @@
 		function lines() {
 			var line = "";
 			for (var i = 0; i < len; i++) {
-				if (!actions[len-1 - i]) actions[len-1-i] = " ";
-				var line = line + (len-i).toString() +") " + actions[len-1 - i] + "<br/>";
+				if (!actions[len - 1 - i])
+					actions[len - 1 - i] = " ";
+				var line = line + (len - i).toString() + ") " + actions[len - 1 - i] + "<br/>";
 			}
 			document.getElementById("actions").innerHTML = line;
 		};
-
 	</script>
+	<!-- DEPENDENCES -->
 	<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
 </body>
 </html>
