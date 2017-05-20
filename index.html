@@ -13,22 +13,23 @@
 	<style>
 		div.calc {
 			font-family: Arial, Helvetica, sans-serif;
-			margin-top: 40px;
-			margin-left: 40px;
+			margin-top: 40px; 
 			width: 400px;
 			border: 2px solid dimgrey;
 			-moz-box-shadow: 0 0 10px #AAA;
 			-webkit-box-shadow: 0 0 10px #AAA;
 			box-shadow: 0 0 10px #AAA;
 			display: inline-block;
+
+			box-sizing: initial;
 		}
 		
 		#digits {
 			width: 400px;
 			padding: 0px;
-			margin: 0px;
-			box-sizing: initial;
 			font-size: 0px;
+			margin: 0px;
+			box-sizing: border-box;
 		}
 		
 		input {
