@@ -52,7 +52,7 @@ var add = function (v) {
 					curSpan.innerHTML = v;
 			}
 			else {
-				if (curSpan.innerHTML.includes(".") && v == ".") {/* SKIP */ }
+				if (curSpan.innerHTML.includes(".") && v == ".") {/* SKIP */}
 				else
 					curSpan.innerHTML = curSpan.innerHTML + v;
 			}
@@ -83,8 +83,7 @@ var addMath = function (v) {
 // CHANGES SIGN +/-
 var addSign = function () {
 	if (!equal) {
-		if (curSpan.innerHTML == "0" || curSpan.innerHTML == "") { }
-		else {
+		if (curSpan.innerHTML != "0" && curSpan.innerHTML != "") {
 			if (curSpan.innerHTML.charAt(0) == "-")
 				curSpan.innerHTML = curSpan.innerHTML.slice(1);
 			else
@@ -147,7 +146,6 @@ var result = function () {
 		equal = false;
 		result();
 	}
-
 }
 
 // ADDS OPERATION TO THE ARRAY
