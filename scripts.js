@@ -133,7 +133,7 @@ var result = function () {
 		if (str != "NaN" && str != "Infinity" && str != "Error") {
 			span4.innerHTML = "=";
 			span5.innerHTML = val.toString();
-			math = span1.innerHTML + " " + span2.innerHTML + " " + span3.innerHTML + "= " + span5.innerHTML;
+			math = span1.innerHTML + " " + span2.innerHTML + " " + span3.innerHTML + " = " + span5.innerHTML;
 			addAction(math);
 		}
 		else
