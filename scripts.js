@@ -66,7 +66,6 @@ var addMath = function (v) {
 	if (!equal) {
 		if (curSpan == span1) {
 			span2.innerHTML = v;
-			//curSpan = span3;
 		}
 		lastEntry = v;
 	}
